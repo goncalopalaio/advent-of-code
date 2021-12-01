@@ -1,51 +1,43 @@
-import Debug.log
 import java.io.File
-import kotlin.system.measureTimeMillis
 
 fun main(args: Array<String>) {
     val input = File("inputs/2021/day_1.txt").readLines()
     println("--- Part 1 --- 1162")
-    part1(input)
+    measurePrint("Part 1") { part1(input) }
 
     println("--- Part 2 --- 1190")
-    val timePart2 = measureTimeMillis {
-        part2(input.map { it.toInt() })
-    }
-    println("Finished in ${timePart2}ms")
-
-    val timePart2Windowed = measureTimeMillis {
-        part2Windowed(input.map { it.toInt() })
-    }
-    println("Finished in ${timePart2Windowed}ms")
+    val intInput = input.map { it.toInt() }
+    measurePrint("Part 2") { part2(intInput) }
+    measurePrint("Part 2 Windowed V1") { part2WindowedV1(intInput) }
+    measurePrint("Part 2 Windowed V2") { part2WindowedV2(intInput) }
 }
 
-private fun part2Windowed(input: List<Int>) {
+private fun part2WindowedV2(input: List<Int>): Int {
+    return input
+        .asSequence()
+        .windowed(3)
+        .map { it.sum() }
+        .windowed(2)
+        .map { if (it[0] < it[1]) 1 else 0 }
+        .sum()
+}
+
+private fun part2WindowedV1(input: List<Int>): Int {
     var previousSum = 0
     var count = 0
 
-    if (true) {
-        input.windowed(3).forEach {
-            val sum = it.sum()
-            if (previousSum != 0 && sum > previousSum) {
-                count += 1
-            }
-            previousSum = sum
+    input.windowed(3).forEach {
+        val sum = it.sum()
+        if (previousSum != 0 && sum > previousSum) {
+            count += 1
         }
-    } else {
-        count =
-            input
-                .asSequence()
-                .windowed(3)
-                .map { it.sum() }
-                .windowed(2)
-                .map { if (it[0] < it[1]) 1 else 0 }
-                .sum()
+        previousSum = sum
     }
 
-    println("Count $count")
+    return count
 }
 
-private fun part2(input: List<Int>) {
+private fun part2(input: List<Int>): Int {
     val size = input.size
     var count = 0
     for (i in 0 until size) {
@@ -69,32 +61,26 @@ private fun part2(input: List<Int>) {
 
         val isIncrease = bSum > aSum
         if (isIncrease) count += 1
-
-        // log("$a1 $b1 $c1 | $a2 $b2 $c2 | $aSum > $bSum -> $isIncrease")
     }
 
-    println("Count $count")
+    return count
 }
 
-private fun part1(input: List<String>) {
+private fun part1(input: List<String>): Int {
     var count = 0
 
-    val time = measureTimeMillis {
-        var previous: String? = null
-        for (line in input) {
-            if (previous == null) {
+    var previous: String? = null
+    for (line in input) {
+        if (previous == null) {
+            count += 1
+        } else {
+            if (line > previous) {
                 count += 1
-            } else {
-                // log("$line | $previous | ${(line > previous)}")
-                if (line > previous) {
-                    count += 1
-                }
             }
-
-            previous = line
         }
+
+        previous = line
     }
 
-    println("Count $count")
-    println("Finished in ${time}ms")
+    return count
 }
