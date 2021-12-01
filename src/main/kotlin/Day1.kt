@@ -10,6 +10,10 @@ fun main(args: Array<String>) {
     measurePrint("Part 2") { part2(intInput) }
     measurePrint("Part 2 Windowed V1") { part2WindowedV1(intInput) }
     measurePrint("Part 2 Windowed V2") { part2WindowedV2(intInput) }
+
+    // Note:
+    // Apparently there's a way to reduce the problem:
+    //  b + c + d > a + b + c  <=>  d > a
 }
 
 private fun part2WindowedV2(input: List<Int>): Int {
