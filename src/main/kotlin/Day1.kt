@@ -14,6 +14,7 @@ fun main(args: Array<String>) {
     // Note:
     // Apparently there's a way to reduce the problem:
     //  b + c + d > a + b + c  <=>  d > a
+    // you could look backwards 1 for part 1 and 3 for part two.
 }
 
 private fun part2WindowedV2(input: List<Int>): Int {
