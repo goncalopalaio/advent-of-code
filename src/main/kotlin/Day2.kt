@@ -49,6 +49,9 @@ fun main() {
     avgMeasurements.forEachIndexed { idx, pair ->
         println("$idx :: ${pair.first} | avg=${pair.second} ms")
     }
+
+    // Part 2 (Version 2) appears to be faster most of the time but the results are not consistent
+    // the input seems to be too small, all results are sub-millisecond on average so might not be that accurate
 }
 
 private fun part2Version4(input: List<String>): Int {

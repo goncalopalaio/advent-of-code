@@ -1,3 +1,4 @@
+import java.util.*
 import kotlin.system.measureNanoTime
 import kotlin.system.measureTimeMillis
 
@@ -11,8 +12,13 @@ object Debug {
     }
 }
 
-inline fun measurePrint(message: String, additionalRuns: Int = 0, warmUp: Boolean = true, block: () -> Int): Pair<String, Double> {
-    val result: Int
+inline fun <T> measurePrint(
+    message: String,
+    additionalRuns: Int = 0,
+    warmUp: Boolean = true,
+    block: () -> T
+): Pair<String, Double> {
+    val result: T
     val mainTime = measureTimeMillis {
         result = block()
     }
