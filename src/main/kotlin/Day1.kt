@@ -7,7 +7,7 @@ fun main(args: Array<String>) {
 
     println("--- Part 2 --- 1190")
     val intInput = input.map { it.toInt() }
-    measurePrint("Part 2") { part2(intInput) }
+    measurePrint("Part 2") { part2Version2(intInput) }
     measurePrint("Part 2 Windowed V1") { part2WindowedV1(intInput) }
     measurePrint("Part 2 Windowed V2") { part2WindowedV2(intInput) }
 
@@ -42,7 +42,7 @@ private fun part2WindowedV1(input: List<Int>): Int {
     return count
 }
 
-private fun part2(input: List<Int>): Int {
+private fun part2Version2(input: List<Int>): Int {
     val size = input.size
     var count = 0
     for (i in 0 until size) {

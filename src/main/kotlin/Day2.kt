@@ -1,6 +1,29 @@
-import Debug.log
 import java.io.File
-import java.lang.RuntimeException
+import java.util.*
+
+private const val FORWARD_PREFIX = "forward "
+private const val DOWN_PREFIX = "down "
+private const val UP_PREFIX = "up "
+
+private const val FORWARD_CHAR = 'f'
+private const val DOWN_CHAR = 'd'
+private const val UP_CHAR = 'u'
+
+private const val FORWARD_PREFIX_LEN = FORWARD_PREFIX.length
+private const val DOWN_PREFIX_LEN = DOWN_PREFIX.length
+private const val UP_PREFIX_LEN = UP_PREFIX.length
+
+enum class Orientation {
+    Forward,
+    Down,
+    Up
+}
+
+sealed class Direction(val amount: Int) {
+    class Forward(amount: Int) : Direction(amount)
+    class Down(amount: Int) : Direction(amount)
+    class Up(amount: Int) : Direction(amount)
+}
 
 fun main() {
     val inputDemo = File("inputs/2021/day_2_demo.txt").readLines()
@@ -9,18 +32,91 @@ fun main() {
     measurePrint("Part 1 Demo") { part1(inputDemo) }
     measurePrint("Part 1") { part1(input) }
 
-    measurePrint("Part 2 Demo") { part2(inputDemo) }
-    measurePrint("Part 2") { part2(input) }
+    measurePrint("Part 2 Demo") { part2Version2(inputDemo) }
 
-    /**
-        150              | Part 1 Demo                      | 0ms
-        1488669          | Part 1                           | 1ms
-        900              | Part 2 Demo                      | 0ms
-        1176514794       | Part 2                           | 1ms
-     */
+    val avgMeasurements = mutableListOf<Pair<String, Double>>()
+    with(avgMeasurements) {
+        add(measurePrint("Part 2 (Version 0)", additionalRuns = 512) { part2Version0(input) })
+        add(measurePrint("Part 2 (Version 1)", additionalRuns = 512) { part2Version1(input) })
+        add(measurePrint("Part 2 (Version 3)", additionalRuns = 512) { part2Version3(input) })
+        add(measurePrint("Part 2 (Version 2)", additionalRuns = 512) { part2Version2(input) })
+        add(measurePrint("Part 2 (Version 4)", additionalRuns = 512) { part2Version4(input) })
+    }
+
+    avgMeasurements.sortBy { it.second }
+    avgMeasurements.reverse() // fastest last
+
+    avgMeasurements.forEachIndexed { idx, pair ->
+        println("$idx :: ${pair.first} | avg=${pair.second} ms")
+    }
 }
 
-private fun part2(input: List<String>): Int {
+private fun part2Version4(input: List<String>): Int {
+    var horizontalPosition = 0
+    var aim = 0
+    var depth = 0
+
+    for (line in input) {
+
+        when (parseOrientation(line)) {
+            Orientation.Forward -> {
+                val amount = parseForwardLine(line)
+                horizontalPosition += amount
+                depth += aim * amount
+            }
+            Orientation.Down -> {
+                val amount = parseDownLine(line)
+                aim += amount
+            }
+            Orientation.Up -> {
+                val amount = parseUpLine(line)
+                aim -= amount
+            }
+        }
+    }
+
+    return horizontalPosition * depth
+}
+
+private fun part2Version3(input: List<String>): Int {
+    var horizontalPosition = 0
+    var aim = 0
+    var depth = 0
+
+    val directions = Array(input.size) { parseLine(input[it]) }
+    for (direction in directions) {
+        when (direction) {
+            is Direction.Down -> aim += direction.amount
+            is Direction.Forward -> {
+                horizontalPosition += direction.amount
+                depth += aim * direction.amount
+            }
+            is Direction.Up -> aim -= direction.amount
+        }
+    }
+    return horizontalPosition * depth
+}
+
+private fun part2Version2(input: List<String>): Int {
+    var horizontalPosition = 0
+    var aim = 0
+    var depth = 0
+
+    for (line in input) {
+        when (val direction = parseLine(line)) {
+            is Direction.Down -> aim += direction.amount
+            is Direction.Forward -> {
+                horizontalPosition += direction.amount
+                depth += aim * direction.amount
+            }
+            is Direction.Up -> aim -= direction.amount
+        }
+    }
+
+    return horizontalPosition * depth
+}
+
+private fun part2Version1(input: List<String>): Int {
     var horizontalPosition = 0
     var aim = 0
     var depth = 0
@@ -29,28 +125,71 @@ private fun part2(input: List<String>): Int {
         val direction = line[0]
         val amount: Int
         when (direction) {
-            'f' -> {
-                amount = line.substring("forward ".length).toInt()
+            FORWARD_CHAR -> {
+                amount = line.substring(FORWARD_PREFIX_LEN).toInt()
                 horizontalPosition += amount
                 depth += aim * amount
             }
-            'd' -> {
-                amount = line.substring("down ".length).toInt()
+            DOWN_CHAR -> {
+                amount = line.substring(DOWN_PREFIX_LEN).toInt()
                 aim += amount
             }
-            'u' -> {
-                amount = line.substring("up ".length).toInt()
+            UP_CHAR -> {
+                amount = line.substring(UP_PREFIX_LEN).toInt()
                 aim -= amount
             }
             else -> {
                 throw RuntimeException("Unexpected value, line=$line")
             }
         }
-
-        // log("direction=$direction, amount=$amount")
     }
 
-    // log("horizontalPosition=$horizontalPosition, depth=$depth")
+    return horizontalPosition * depth
+}
+
+private fun part2Version0(input: List<String>): Int {
+    var horizontalPosition = 0
+    var aim = 0
+    var depth = 0
+
+    val directions = Array(input.size) { input[it][0] }
+    val amounts = Array(input.size) {
+        when (directions[it]) {
+            FORWARD_CHAR -> {
+                input[it].substring(FORWARD_PREFIX_LEN).toInt()
+            }
+            DOWN_CHAR -> {
+                input[it].substring(DOWN_PREFIX_LEN).toInt()
+            }
+            UP_CHAR -> {
+                input[it].substring(UP_PREFIX_LEN).toInt()
+            }
+            else -> {
+                throw RuntimeException("Unexpected value, line=${input[it]}")
+            }
+        }
+    }
+
+    for (idx in input.indices) {
+        val direction = directions[idx]
+        val amount = amounts[idx]
+        when (direction) {
+            FORWARD_CHAR -> {
+                horizontalPosition += amount
+                depth += aim * amount
+            }
+            DOWN_CHAR -> {
+                aim += amount
+            }
+            UP_CHAR -> {
+                aim -= amount
+            }
+            else -> {
+                throw RuntimeException("Unexpected value, direction=$direction, amount=$amount")
+            }
+        }
+    }
+
     return horizontalPosition * depth
 }
 
@@ -58,29 +197,45 @@ private fun part1(input: List<String>): Int {
     var horizontalPosition = 0
     var depth = 0
     for (line in input) {
-        val direction = line[0]
-        val amount: Int
-        when (direction) {
-            'f' -> {
-                amount = line.substring("forward ".length).toInt()
-                horizontalPosition += amount
-            }
-            'd' -> {
-                amount = line.substring("down ".length).toInt()
-                depth += amount
-            }
-            'u' -> {
-                amount = line.substring("up ".length).toInt()
-                depth -= amount
-            }
-            else -> {
-                throw RuntimeException("Unexpected value, line=$line")
-            }
+        when (val direction = parseLine(line)) {
+            is Direction.Down -> depth += direction.amount
+            is Direction.Forward -> horizontalPosition += direction.amount
+            is Direction.Up -> depth -= direction.amount
         }
-
-        // log("direction=$direction, amount=$amount")
     }
 
-    // log("horizontalPosition=$horizontalPosition, depth=$depth")
     return horizontalPosition * depth
 }
+
+private fun parseLine(line: String): Direction {
+    return when (line[0]) {
+        FORWARD_CHAR -> {
+            val amount = line.substring(FORWARD_PREFIX.length).toInt()
+            Direction.Forward(amount)
+        }
+        DOWN_CHAR -> {
+            val amount = line.substring(DOWN_PREFIX.length).toInt()
+            Direction.Down(amount)
+        }
+        UP_CHAR -> {
+            val amount = line.substring(UP_PREFIX.length).toInt()
+            Direction.Up(amount)
+        }
+        else -> {
+            throw RuntimeException("Unexpected value, line=$line")
+        }
+    }
+}
+
+private inline fun parseOrientation(line: String): Orientation {
+    return when (line[0]) {
+        FORWARD_CHAR -> Orientation.Forward
+        DOWN_CHAR -> Orientation.Down
+        UP_CHAR -> Orientation.Up
+        else -> throw RuntimeException("Unexpected value, line=$line")
+    }
+}
+
+private fun parseForwardLine(line: String): Int = line.substring(FORWARD_PREFIX.length).toInt()
+private fun parseDownLine(line: String): Int = line.substring(DOWN_PREFIX.length).toInt()
+private fun parseUpLine(line: String): Int = line.substring(UP_PREFIX.length).toInt()
