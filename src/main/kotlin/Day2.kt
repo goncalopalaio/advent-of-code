@@ -1,5 +1,4 @@
 import java.io.File
-import java.util.*
 
 private const val FORWARD_PREFIX = "forward "
 private const val DOWN_PREFIX = "down "
@@ -25,22 +24,24 @@ sealed class Direction(val amount: Int) {
     class Up(amount: Int) : Direction(amount)
 }
 
-fun main() {
+private fun main() = day2()
+
+fun day2() {
     val inputDemo = File("inputs/2021/day_2_demo.txt").readLines()
     val input = File("inputs/2021/day_2.txt").readLines()
 
-    measurePrint("Part 1 Demo") { part1(inputDemo) }
-    measurePrint("Part 1") { part1(input) }
+    runProblem("Part 1 Demo") { part1(inputDemo) }
+    runProblem("Part 1") { part1(input) }
 
-    measurePrint("Part 2 Demo") { part2Version2(inputDemo) }
+    runProblem("Part 2 Demo") { part2Version2(inputDemo) }
 
     val avgMeasurements = mutableListOf<Pair<String, Double>>()
     with(avgMeasurements) {
-        add(measurePrint("Part 2 (Version 0)", additionalRuns = 512) { part2Version0(input) })
-        add(measurePrint("Part 2 (Version 1)", additionalRuns = 512) { part2Version1(input) })
-        add(measurePrint("Part 2 (Version 3)", additionalRuns = 512) { part2Version3(input) })
-        add(measurePrint("Part 2 (Version 2)", additionalRuns = 512) { part2Version2(input) })
-        add(measurePrint("Part 2 (Version 4)", additionalRuns = 512) { part2Version4(input) })
+        add(runProblem("Part 2 (Version 0)", additionalRuns = 512) { part2Version0(input) })
+        add(runProblem("Part 2 (Version 1)", additionalRuns = 512) { part2Version1(input) })
+        add(runProblem("Part 2 (Version 3)", additionalRuns = 512) { part2Version3(input) })
+        add(runProblem("Part 2 (Version 2)", additionalRuns = 512) { part2Version2(input) })
+        add(runProblem("Part 2 (Version 4)", additionalRuns = 512) { part2Version4(input) })
     }
 
     avgMeasurements.sortBy { it.second }
@@ -230,7 +231,7 @@ private fun parseLine(line: String): Direction {
     }
 }
 
-private inline fun parseOrientation(line: String): Orientation {
+private fun parseOrientation(line: String): Orientation {
     return when (line[0]) {
         FORWARD_CHAR -> Orientation.Forward
         DOWN_CHAR -> Orientation.Down

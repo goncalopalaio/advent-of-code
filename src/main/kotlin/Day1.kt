@@ -1,15 +1,15 @@
 import java.io.File
 
-fun main(args: Array<String>) {
-    val input = File("inputs/2021/day_1.txt").readLines()
-    println("--- Part 1 --- 1162")
-    measurePrint("Part 1") { part1(input) }
+private fun main() = day1()
 
-    println("--- Part 2 --- 1190")
+fun day1() {
+    val input = File("inputs/2021/day_1.txt").readLines()
+    runProblem("Part 1", expected = 1162) { part1(input) }
+
     val intInput = input.map { it.toInt() }
-    measurePrint("Part 2") { part2Version2(intInput) }
-    measurePrint("Part 2 Windowed V1") { part2WindowedV1(intInput) }
-    measurePrint("Part 2 Windowed V2") { part2WindowedV2(intInput) }
+    runProblem("Part 2", expected = 1190) { part2Version2(intInput) }
+    runProblem("Part 2 Windowed V1", expected = 1190) { part2WindowedV1(intInput) }
+    runProblem("Part 2 Windowed V2", expected = 1190) { part2WindowedV2(intInput) }
 
     // Note:
     // Apparently there's a way to reduce the problem:

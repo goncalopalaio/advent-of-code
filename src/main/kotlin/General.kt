@@ -1,26 +1,22 @@
-import java.util.*
 import kotlin.system.measureNanoTime
 import kotlin.system.measureTimeMillis
 
-// Add general functions here
-
-object Debug {
-    var DEBUG = true
-
-    fun log(message: String) {
-        if (DEBUG) println(message)
-    }
-}
-
-inline fun <T> measurePrint(
+inline fun <T> runProblem(
     message: String,
     additionalRuns: Int = 0,
     warmUp: Boolean = true,
+    expected: T? = null,
     block: () -> T
 ): Pair<String, Double> {
     val result: T
     val mainTime = measureTimeMillis {
         result = block()
+    }
+
+    if (expected != null) {
+        if (result != expected) {
+            throw RuntimeException("Unexpected result. expected >$expected< got >$result<")
+        }
     }
 
     val partialTimes = mutableListOf<Long>()
