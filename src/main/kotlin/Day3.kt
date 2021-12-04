@@ -12,6 +12,8 @@ fun day3() {
     runProblem("Part 1") { part1(input) }
     runProblem("Part 2 (Demo)", expected = 230) { part2(inputDemo) }
     runProblem("Part 2") { part2(input) }
+
+    // This is an absolute mess.
 }
 
 private fun part2(input: List<String>): Int {
@@ -27,12 +29,9 @@ private fun part2(input: List<String>): Int {
         } else onesSum < zerosSum
     }
 
-    println("oxygenGeneratorRating=$oxygenGeneratorRating")
-    println("co2ScrubberRating=$co2ScrubberRating")
+    // Note: Super messy
     val oxygenGeneratorRatingValue = oxygenGeneratorRating.toBinaryString(input[0].length).toInt(2)
     val co2ScrubberRatingValue = co2ScrubberRating.toBinaryString(input[0].length).toInt(2)
-    println("oxygenGeneratorRatingValue=$oxygenGeneratorRatingValue")
-    println("co2ScrubberRatingValue=$co2ScrubberRatingValue")
 
     return oxygenGeneratorRatingValue * co2ScrubberRatingValue
 }
@@ -48,20 +47,12 @@ private fun calc(input: List<String>, method: (onesSum: Int, zerosSum: Int) -> B
     while (true) {
         val onesSum = countOnes(col, remaining, numbers)
         val zerosSum = remaining.size - onesSum
-        println("sums: ones=$onesSum, zeros=$zerosSum")
         val mostCommon = method(onesSum, zerosSum)
 
         remaining = remaining.filter { numbers[it].get(col) == mostCommon }.toMutableList()
-
-        if (true) {
-            println("remaining: $remaining")
-            remaining.forEach { println(numbers[it].toBinaryString(width)) }
-        }
-
         if (remaining.size == 1) return numbers[remaining[0]]
         col++
     }
-
 }
 
 private fun countOnes(col: Int, indices: List<Int>, numbers: Array<BitSet>): Int {
@@ -99,21 +90,11 @@ private fun part1(input: List<String>): Int {
     val gammaInt = gamma.toInt(2)
     val epsilon = gamma.invertBin()
     val epsilonInt = epsilon.toInt(2)
-    println("gamma: $gamma :: gammaInt=$gammaInt :: epsilonInt=$epsilonInt")
 
     return gammaInt * epsilonInt
 }
 
-private fun printData(data: Array<Array<Int>>) {
-    for (datum in data) {
-        for (line in datum) {
-            print("$line")
-        }
-        println()
-    }
-}
-
-// TODO Replace with bitwise operation
+// Note: Bitwise operations would have simplified this a little.
 private fun String.invertBin(): String {
     var result = ""
     val characters = this.chars()
@@ -130,6 +111,7 @@ private fun String.invertBin(): String {
     return result
 }
 
+// Note: Might as well have used an array instead of a BitSet
 private fun parseBitset(line: String): BitSet {
     val one = '1'.code
     val characters = line.chars().toArray()
@@ -152,7 +134,6 @@ private fun BitSet.toBinaryString(len: Int): String {
             "0"
         }
     }
-
     return res
 }
 
