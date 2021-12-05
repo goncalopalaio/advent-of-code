@@ -30,7 +30,7 @@ private fun part2(input: List<String>): Int {
 
 private fun part1(input: List<String>): Int {
     val (intervals, width, height) = parseInput1(input)
-    val field = Array((width) * height) { 0 }
+    val field = Array(width * height) { 0 }
 
     for (interval in intervals) {
         interval.horizontalIndices { x, y ->
