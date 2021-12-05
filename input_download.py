@@ -29,6 +29,11 @@ def main():
 		f.write(response.text)
 		print(f"Wrote to: {full_path}")
 
+	# Create a placeholder for the demo input
+	full_path = f"{DEST_FOLDER}/{YEAR}/day_{day}_demo.txt"
+	with open(full_path, "w") as f:
+		pass
+
 
 
 if __name__ == '__main__':
