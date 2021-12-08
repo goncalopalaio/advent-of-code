@@ -5,6 +5,7 @@ import os
 AOC_COOKIE = os.environ["AOC_COOKIE"]
 YEAR = 2021
 DEST_FOLDER="inputs"
+CODE_LOCATION="src/main/kotlin"
 
 def main():
 	if not AOC_COOKIE:
@@ -33,6 +34,24 @@ def main():
 	full_path = f"{DEST_FOLDER}/{YEAR}/day_{day}_demo.txt"
 	with open(full_path, "w") as f:
 		pass
+
+	# Create placeholder kt by copying Day0.kt
+	template_path = f"{CODE_LOCATION}/Day0.kt"
+
+	if os.path.isfile(template_path):
+		template_content = ""
+		with open(template_path, "r") as f:
+			template_content = f.read()
+
+		template_dest = f"{CODE_LOCATION}/Day{day}.kt"
+		if not os.path.isfile(template_dest):
+			with open(template_dest, "w") as f:
+				template_content = template_content.replace("day0", f"day{day}")
+				template_content = template_content.replace("day_0", f"day_{day}")
+				f.write(template_content)
+
+
+
 
 
 
