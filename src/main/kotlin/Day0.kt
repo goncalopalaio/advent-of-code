@@ -10,7 +10,7 @@ fun day0() {
     runProblem("Part 1 (Demo)") { part1(inputDemo) }
     runProblem("Part 1") { part1(input) }
     // runProblem("Part 2 (Demo)") { part2(inputDemo) }
-    // runProblem("Part 2") { part2(inputDemo) }
+    // runProblem("Part 2") { part2(input) }
 }
 
 private fun part2(input: List<String>): Int {
