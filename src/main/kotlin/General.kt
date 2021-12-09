@@ -1,3 +1,4 @@
+import java.util.ArrayList
 import kotlin.system.measureNanoTime
 import kotlin.system.measureTimeMillis
 
@@ -58,3 +59,40 @@ inline fun <T> runProblem(
         Pair(message, (partialTimes.average() / 1e6))
     }
 }
+
+
+/**
+ * Generate all permutations
+ * https://www.quickperm.org/
+ */
+private fun <T> quickPerm(a: Array<T>): ArrayList<Array<T>> {
+    val permutations = ArrayList<Array<T>>()
+
+    val n = a.size
+    val p = (0..(n + 1)).toList().toTypedArray()
+    var i = 1
+    while (i < n) {
+        p[i] -= 1
+        val j = if ((i % 2) == 1) {
+            p[i]
+        } else {
+            0
+        }
+
+        // swap
+        val temp = a[i]
+        a[i] = a[j]
+        a[j] = temp
+
+        permutations.add(a.copyOf())
+
+        i = 1
+        while (p[i] == 0) {
+            p[i] = i
+            i += 1
+        }
+    }
+
+    return permutations
+}
+
