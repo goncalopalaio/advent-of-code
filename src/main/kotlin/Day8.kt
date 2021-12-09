@@ -17,7 +17,6 @@ fun day8() {
     runProblem("Part 2") { part2(input) }
 }
 
-
 private fun part2(input: List<String>): Long {
     val lines = parse2(input)
 
