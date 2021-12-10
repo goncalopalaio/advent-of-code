@@ -107,14 +107,8 @@ fun opens(closing: String, open: String?): Boolean {
 
 fun isOpenChar(s: String): Boolean {
     return when (s) {
-        ")" -> false
-        "]" -> false
-        "}" -> false
-        ">" -> false
-        "(" -> true
-        "[" -> true
-        "{" -> true
-        "<" -> true
+        ")", "]", "}", ">" -> false
+        "(", "[", "{", "<" -> true
         else -> throw RuntimeException("Unexpected value: '$s'")
     }
 }
