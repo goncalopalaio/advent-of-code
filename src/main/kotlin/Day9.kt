@@ -23,11 +23,6 @@ private fun part2(input: List<String>): Int {
     for (y in 0 until h) {
         for (x in 0 until w) {
             val center = pokeGrid(y, x, grid, h, w)!!
-            /**
-             *          UP
-             *   LEFT CENTER RIGHT
-             *         DOWN
-             */
             val up = pokeGrid(y - 1, x, grid, h, w)
             val down = pokeGrid(y + 1, x, grid, h, w)
             val left = pokeGrid(y, x - 1, grid, h, w)
@@ -47,7 +42,6 @@ private fun part2(input: List<String>): Int {
                 basinSizes.add(basin.size + 1)
             }
         }
-
     }
 
     basinSizes.sort()
@@ -87,11 +81,6 @@ private fun part1(input: List<String>): Int {
     for (y in 0 until h) {
         for (x in 0 until w) {
             val center = pokeGrid(y, x, grid, h, w)!!
-            /**
-             *          UP
-             *   LEFT CENTER RIGHT
-             *         DOWN
-             */
             val up = pokeGrid(y - 1, x, grid, h, w)
             val down = pokeGrid(y + 1, x, grid, h, w)
             val left = pokeGrid(y, x - 1, grid, h, w)
@@ -104,7 +93,6 @@ private fun part1(input: List<String>): Int {
             }
         }
     }
-
 
     return riskLevel
 }
