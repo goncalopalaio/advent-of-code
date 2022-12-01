@@ -4,8 +4,8 @@ private fun main() = day0()
 
 fun day0() {
     val day = "day_0"
-    val inputDemo = File("inputs/2021/${day}_demo.txt").readLines()
-    val input = File("inputs/2021/$day.txt").readLines()
+    val inputDemo = File("inputs/2022/${day}_demo.txt").readLines()
+    val input = File("inputs/2022/$day.txt").readLines()
 
     runProblem("Part 1 (Demo)") { part1(inputDemo) }
     // runProblem("Part 1") { part1(input) }
