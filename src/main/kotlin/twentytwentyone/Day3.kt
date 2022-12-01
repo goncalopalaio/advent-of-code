@@ -1,3 +1,6 @@
+package twentytwentyone
+
+import runProblem
 import java.io.File
 import java.util.*
 

@@ -1,3 +1,6 @@
+package twentytwentyone
+
+import runProblem
 import java.io.File
 
 private fun main() = day10()

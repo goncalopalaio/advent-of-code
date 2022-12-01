@@ -1,3 +1,6 @@
+package twentytwentyone
+
+import runProblem
 import java.io.File
 import javax.swing.text.Position
 import kotlin.math.pow

@@ -3,9 +3,10 @@ import requests
 import os
 
 AOC_COOKIE = os.environ["AOC_COOKIE"]
-YEAR = 2021
+YEAR = 2022
 DEST_FOLDER="inputs"
-CODE_LOCATION="src/main/kotlin"
+CODE_LOCATION=f"src/main/kotlin/{YEAR}"
+TEMPLATE_LOCATION="src/main/kotlin/template"
 
 def main():
 	if not AOC_COOKIE:
@@ -36,11 +37,9 @@ def main():
 		pass
 
 	# Create placeholder kt by copying Day0.kt
-	template_path = f"{CODE_LOCATION}/Day0.kt"
-
-	if os.path.isfile(template_path):
+	if os.path.isfile(TEMPLATE_LOCATION):
 		template_content = ""
-		with open(template_path, "r") as f:
+		with open(TEMPLATE_LOCATION, "r") as f:
 			template_content = f.read()
 
 		template_dest = f"{CODE_LOCATION}/Day{day}.kt"

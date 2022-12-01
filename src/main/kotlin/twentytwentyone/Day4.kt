@@ -1,3 +1,6 @@
+package twentytwentyone
+
+import runProblem
 import java.io.File
 
 private const val DEBUG = false
