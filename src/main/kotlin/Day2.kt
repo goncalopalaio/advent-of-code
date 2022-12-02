@@ -29,27 +29,23 @@ fun day2() {
 
 private fun part2(originalInput: List<String>): Int {
     val input = parse2(originalInput)
-    var totalScore = 0
-    for ((other, outcome) in input) {
+
+    return input.fold(0) { total, (other, outcome) ->
         val play = forceOutcome(other, outcome)
         val playScore = playScore(play)
         val outcomeScore = outcomeScore(outcome(other, play))
-        totalScore += playScore + outcomeScore
+        total + playScore + outcomeScore
     }
-
-    return totalScore
 }
 
 private fun part1(originalInput: List<String>): Int {
     val input = parse1(originalInput)
-    var totalScore = 0
-    for ((other, me) in input) {
+
+    return input.fold(0) { total, (other, me) ->
         val playScore = playScore(me)
         val outcomeScore = outcomeScore(outcome(other, me))
-        totalScore += playScore + outcomeScore
+        total + playScore + outcomeScore
     }
-
-    return totalScore
 }
 
 private fun parse1(input: List<String>) = Array(input.size) {
