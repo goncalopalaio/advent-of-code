@@ -1,11 +1,10 @@
 package twentytwentyone
 
-import runProblem
+import harness.runProblem
 import java.io.File
 import java.util.*
 import kotlin.Comparator
 import kotlin.math.abs
-import kotlin.math.pow
 
 private fun main() = day15()
 

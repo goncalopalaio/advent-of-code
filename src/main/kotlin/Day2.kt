@@ -1,5 +1,6 @@
 import Outcome.*
 import Play.*
+import harness.runProblem
 import java.io.File
 
 private fun main() = day2()

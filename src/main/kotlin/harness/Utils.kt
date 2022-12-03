@@ -1,3 +1,5 @@
+package harness
+
 import kotlin.system.measureNanoTime
 import kotlin.system.measureTimeMillis
 inline fun <T> runProblem(

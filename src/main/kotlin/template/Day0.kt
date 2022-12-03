@@ -1,3 +1,4 @@
+import harness.runProblem
 import java.io.File
 
 private fun main() = day0()

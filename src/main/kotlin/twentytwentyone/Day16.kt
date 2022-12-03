@@ -1,8 +1,7 @@
 package twentytwentyone
 
-import runProblem
+import harness.runProblem
 import java.io.File
-import javax.swing.text.Position
 import kotlin.math.pow
 
 private fun main() = day16()
@@ -14,9 +13,9 @@ fun day16() {
     val input = File("inputs/2021/$day.txt").readLines()
 
     runProblem("Part 1 (Demo)") { part1(inputDemo1, inputDemo2) }
-    // runProblem("Part 1") { part1(input) }
-    // runProblem("Part 2 (Demo)") { part2(inputDemo) }
-    // runProblem("Part 2") { part2(input) }
+    // harness.runProblem("Part 1") { part1(input) }
+    // harness.runProblem("Part 2 (Demo)") { part2(inputDemo) }
+    // harness.runProblem("Part 2") { part2(input) }
 }
 
 private fun part2(input: List<String>): Int {

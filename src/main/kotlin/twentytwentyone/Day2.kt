@@ -1,6 +1,6 @@
 package twentytwentyone
 
-import runProblem
+import harness.runProblem
 import java.io.File
 
 private const val FORWARD_PREFIX = "forward "
