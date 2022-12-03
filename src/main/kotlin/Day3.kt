@@ -10,7 +10,7 @@ fun day3() {
     runProblem("Part 1 (Demo)", expected = 157) { part1(inputDemo) }
     runProblem("Part 1", expected = 7742) { part1(input) }
     runProblem("Part 2 (Demo)", expected = 70) { part2(inputDemo) }
-    runProblem("Part 2") { part2(input) }
+    runProblem("Part 2", expected = 2276) { part2(input) }
 }
 
 private fun part2(input: List<String>) = parse2(input).fold(0) { sum, elements ->
