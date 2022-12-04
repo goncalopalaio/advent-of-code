@@ -8,6 +8,9 @@ fun day4() {
     val inputDemo = File("inputs/2022/${day}_demo.txt").readLines()
     val input = File("inputs/2022/$day.txt").readLines()
 
+    // Notes:
+    // Abused Sets for this one. Using IntRange would have been the simpler way to go.
+
     runProblem("Part 1 (Demo)", expected = 2) { part1(inputDemo) }
     runProblem("Part 1") { part1(input) }
     runProblem("Part 2 (Demo)") { part2(inputDemo) }
