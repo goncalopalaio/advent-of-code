@@ -1,5 +1,6 @@
 import harness.runProblem
 import java.io.File
+import kotlin.math.exp
 
 private fun main() = day5()
 
@@ -9,15 +10,15 @@ fun day5() {
     val input = File("inputs/2022/$day.txt").readLines()
 
     runProblem("Part 1 (Demo)", expected = "CMZ") { part1(inputDemo) }
-    runProblem("Part 1") { part1(input) }
-    runProblem("Part 2 (Demo)") { part2(inputDemo) }
-    runProblem("Part 2") { part2(input) }
+    runProblem("Part 1", expected = "TGWSMRBPN") { part1(input) }
+    runProblem("Part 2 (Demo)", expected = "MCD") { part2(inputDemo) }
+    runProblem("Part 2", expected = "TZLTLWRNF") { part2(input) }
 }
 
 private fun part2(input: List<String>): String {
     val (stacks, actions) = parse(input)
 
-    for ((quantity, from ,to) in actions) {
+    for ((quantity, from, to) in actions) {
         val boxes = ArrayList<Char>()
         for (q in 0 until quantity) {
             val popped = stacks[from - 1].pop() ?: break
@@ -42,7 +43,7 @@ private fun part2(input: List<String>): String {
 private fun part1(input: List<String>): String {
     val (stacks, actions) = parse(input)
 
-    for ((quantity, from ,to) in actions) {
+    for ((quantity, from, to) in actions) {
         for (q in 0 until quantity) {
             val popped = stacks[from - 1].pop() ?: break
             stacks[to - 1].push(popped)
@@ -63,7 +64,7 @@ private fun parse(input: List<String>): Pair<Array<BoxedStack<Char>>, ArrayList<
 
     val stackNumbers = input[stackEnd].split(" ").filter { it.isNotBlank() }.map { it.toInt() }
 
-    val stacks = Array(stackNumbers.size) {BoxedStack<Char>()}
+    val stacks = Array(stackNumbers.size) { BoxedStack<Char>() }
     for (i in 0 until stackEnd) {
         val line = input[i]
         for ((stackPosition, s) in (1 until line.length step 4).withIndex()) {
@@ -78,7 +79,7 @@ private fun parse(input: List<String>): Pair<Array<BoxedStack<Char>>, ArrayList<
     for (i in (stackEnd + 2) until input.size) {
         // Use regex?
         val parts = input[i].split(" ") // No destructuring for 6 parts
-        actions.add(Move(parts[1].toInt(), parts[3].toInt() ,parts[5].toInt()))
+        actions.add(Move(parts[1].toInt(), parts[3].toInt(), parts[5].toInt()))
     }
 
     return Pair(stacks, actions)
