@@ -16,7 +16,7 @@ inline fun <T> runProblem(
 
     if (expected != null) {
         if (result != expected) {
-            throw RuntimeException("Unexpected result. expected >$expected< got >$result<")
+            throw RuntimeException("$message | expected >$expected< got >$result<")
         }
     }
 
