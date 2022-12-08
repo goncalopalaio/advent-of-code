@@ -39,5 +39,3 @@ class Stack<T> {
         return "Stack(${backing.joinToString()})"
     }
 }
-
-

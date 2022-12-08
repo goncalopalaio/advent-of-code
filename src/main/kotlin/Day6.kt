@@ -1,7 +1,5 @@
 import harness.runProblem
 import java.io.File
-import java.lang.Integer.max
-import java.lang.Integer.min
 
 private fun main() = day6()
 
