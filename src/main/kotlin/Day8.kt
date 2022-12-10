@@ -33,31 +33,45 @@ private fun part2(input: List<String>): Int {
 private fun part1(input: List<String>): Int {
     val grid = parse(input)
     val visible = HashSet<Pair<Int, Int>>()
-    val visitedGrid = emptyGrid(grid.width, grid.height)
 
     for (h in 0 until grid.height) {
+        var max = -1
         for (x in 0 until grid.width) {
             val curr = grid.at(x, h)
+            if (curr > max) {
+                max = curr
+                visible.add(x to h)
+            }
         }
+        max = -1
         for (x in (grid.width - 1) downTo 0) {
             val curr = grid.at(x, h)
+            if (curr > max) {
+                max = curr
+                visible.add(x to h)
+            }
         }
     }
     for (w in 0 until grid.width) {
+        var max = -1
         for (y in 0 until grid.height) {
             val curr = grid.at(w, y)
+            if (curr > max) {
+                max = curr
+                visible.add(w to y)
+            }
         }
+        max = -1
         for (y in (grid.height - 1) downTo 0) {
             val curr = grid.at(w, y)
+            if (curr > max) {
+                max = curr
+                visible.add(w to y)
+            }
         }
     }
 
-    grid.print()
-    for (v in visible) {
-        val (x,y) = v
-        val value = grid.at(x,y)
-    }
-    return 0
+    return visible.size
 }
 
 
