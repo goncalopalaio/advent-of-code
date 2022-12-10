@@ -22,12 +22,104 @@ fun day8() {
     runProblem("Part 1 (Test 2)", expected = 14) { part1(test2) }
     runProblem("Part 1 (Demo)", expected = 21) { part1(inputDemo) }
     runProblem("Part 1") { part1(input) }
-    // runProblem("Part 2 (Demo)") { part2(inputDemo) }
-    // runProblem("Part 2") { part2(input) }
+    runProblem("Part 2 (Demo)", expected = 8) { part2(inputDemo) }
+    runProblem("Part 2", expected = 444528) { part2(input) }
 }
 
 private fun part2(input: List<String>): Int {
-    return 0
+    val grid = parse(input)
+
+    var max = -1
+    for (h in 0 until grid.height) {
+        for (w in 0 until grid.width) {
+            val up = scoreUp(grid, w, h)
+            val down = scoreDown(grid, w, h)
+            val right = scoreRight(grid, w, h)
+            val left = scoreLeft(grid, w, h)
+
+            val score = up * down * right * left
+            if (score > max) max = score
+        }
+    }
+
+    return max
+}
+
+private fun scoreLeft(grid: Grid, cx: Int, cy: Int): Int {
+    val left = grid.left(cx, cy, inclusive = false)
+    var max: Int? = null
+    var count = 0
+    for (x in left) {
+        val c = grid.at(x, cy)
+        if (max == null) {
+            max = c
+        } else if (c < max) {
+            count++
+        } else if (c >= max) {
+            count++
+            break
+        }
+    }
+
+    return count
+}
+
+private fun scoreRight(grid: Grid, cx: Int, cy: Int): Int {
+    val right = grid.right(cx, cy, inclusive = false)
+    var max: Int? = null
+    var count = 0
+    for (x in right) {
+        val c = grid.at(x, cy)
+        if (max == null) {
+            max = c
+        } else if (c < max) {
+            count++
+        } else if (c >= max) {
+            count++
+            break
+        }
+    }
+
+    return count
+}
+
+
+private fun scoreUp(grid: Grid, cx: Int, cy: Int): Int {
+    val up = grid.up(cx, cy, inclusive = false)
+    var max: Int? = null
+    var count = 0
+    for (y in up) {
+        val c = grid.at(cx, y)
+        if (max == null) {
+            max = c
+        } else if (c < max) {
+            count++
+        } else if (c >= max) {
+            count++
+            break
+        }
+    }
+
+    return count
+}
+
+private fun scoreDown(grid: Grid, x: Int, y: Int): Int {
+    val down = grid.down(x, y, inclusive = false)
+    var max: Int? = null
+    var count = 0
+    for (y in down) {
+        val c = grid.at(x, y)
+        if (max == null) {
+            max = c
+        } else if (c < max) {
+            count++
+        } else if (c >= max) {
+            count++
+            break
+        }
+    }
+
+    return count
 }
 
 private fun part1(input: List<String>): Int {
@@ -85,11 +177,7 @@ val Grid.height: Int
 fun Grid.at(x: Int, y: Int) = get(y)[x]
 
 fun Grid.atOrNull(x: Int, y: Int): Int? {
-    return if ((x < 0)
-        || (x >= width)
-        || (y < 0)
-        || (y >= height)
-    ) {
+    return if ((x < 0) || (x >= width) || (y < 0) || (y >= height)) {
         null
     } else {
         get(y)[x]
@@ -112,6 +200,14 @@ fun Grid.print() {
         println()
     }
 }
+
+
+fun Grid.up(x: Int, y: Int, inclusive: Boolean = true) = (y downTo 0)
+fun Grid.down(x: Int, y: Int, inclusive: Boolean = true) = (y until height)
+
+fun Grid.left(x: Int, y: Int, inclusive: Boolean = true) = (x downTo 0)
+fun Grid.right(x: Int, y: Int, inclusive: Boolean = true) = (x until width)
+
 
 private fun parse(input: List<String>): Grid {
     return Array(input.size) {
