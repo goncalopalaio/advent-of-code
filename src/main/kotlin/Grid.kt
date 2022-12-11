@@ -1,3 +1,4 @@
+
 typealias Grid = Array<Array<Int>>
 
 val Grid.width: Int
@@ -23,10 +24,10 @@ fun emptyGrid(x: Int, y: Int) = Array(y) {
     Array(x) { 0 }
 }
 
-fun Grid.print() {
+fun Grid.print(padding: Int = 2) {
     for (h in 0 until height) {
         for (w in 0 until width) {
-            print("${at(w, h)}")
+            print("${at(w, h).toString().padEnd(padding)} ")
         }
         println()
     }
