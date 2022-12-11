@@ -167,7 +167,7 @@ private fun parse(input: List<String>): Terminal {
     return t
 }
 
-fun <T> expected(actual: T, expected: T, message: String = "", verbose: Boolean = true) {
+fun <T> expected(actual: T, expected: T, message: String = "", verbose: Boolean = false) {
     if (actual != expected) error("NOK - $expected -> $actual | $message")
     if (verbose) println("OK  - $expected -> $actual | $message")
 }
