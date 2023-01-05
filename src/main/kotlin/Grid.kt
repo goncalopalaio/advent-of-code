@@ -16,18 +16,22 @@ fun Grid.atOrNull(x: Int, y: Int): Int? {
     }
 }
 
+fun Grid.isAccessible(x: Int, y: Int): Boolean {
+    return !((x < 0) || (x >= width) || (y < 0) || (y >= height))
+}
+
 fun Grid.set(x: Int, y: Int, value: Int) {
     get(y)[x] = value
 }
 
-fun emptyGrid(x: Int, y: Int) = Array(y) {
-    Array(x) { 0 }
+fun emptyGrid(x: Int, y: Int, default: Int = 0) = Array(y) {
+    Array(x) { default }
 }
 
 fun Grid.print(padding: Int = 2) {
     for (h in 0 until height) {
         for (w in 0 until width) {
-            print("${at(w, h).toString().padEnd(padding)} ")
+            print(at(w, h).toString().padEnd(padding))
         }
         println()
     }

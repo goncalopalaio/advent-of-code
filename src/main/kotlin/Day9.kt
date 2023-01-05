@@ -194,12 +194,6 @@ enum class Direction {
     Left,
 }
 
-val Pair<Int, Int>.x: Int
-    get() = first
-
-val Pair<Int, Int>.y: Int
-    get() = second
-
 private fun parse(input: List<String>): List<Pair<Direction, Int>> {
     val result = ArrayList<Pair<Direction, Int>>()
 
