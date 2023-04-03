@@ -151,7 +151,7 @@ private fun parse(input: List<String>): List<List<Pair<Int, Int>>> {
     return output
 }
 
-fun fillRocks(grid: Grid, coordinates: List<List<Pair<Int, Int>>>, ) {
+fun fillRocks(grid: Grid, coordinates: List<List<Pair<Int, Int>>>) {
     for (line in coordinates) {
         for (i in 1 until line.size) {
             val (x1, y1) = line[i - 1]
@@ -176,10 +176,11 @@ fun fillRocks(grid: Grid, coordinates: List<List<Pair<Int, Int>>>, ) {
     }
 
 }
+
 fun Grid.printCave(padding: Int = 0) {
     for (h in 0 until height) {
         for (w in 0 until width) {
-            val block = when(val v = at(w, h)) {
+            val block = when (val v = at(w, h)) {
                 ROCK -> "#"
                 AIR -> "."
                 SAND -> "o"
