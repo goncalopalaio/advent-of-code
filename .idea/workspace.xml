@@ -63,7 +63,7 @@
     "project.structure.side.proportion": "0.2"
   }
 }]]></component>
-  <component name="RunManager" selected="Kotlin.Day14Kt">
+  <component name="RunManager" selected="Kotlin.Day15Kt">
     <configuration name="advent-of-code" type="GradleRunConfiguration" factoryName="Gradle" nameIsGenerated="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -97,6 +97,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Day15Kt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Day15Kt" />
+      <module name="advent-2021.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="advent-of-code" />
       <method v="2">
@@ -112,11 +119,13 @@
     </configuration>
     <list>
       <item itemvalue="Gradle.advent-of-code" />
+      <item itemvalue="Kotlin.Day15Kt" />
       <item itemvalue="Kotlin.Day13Kt" />
       <item itemvalue="Kotlin.Day14Kt" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.Day15Kt" />
         <item itemvalue="Kotlin.Day14Kt" />
         <item itemvalue="Kotlin.Day13Kt" />
       </list>
