@@ -1,7 +1,7 @@
 import harness.runProblem
 import java.io.File
-import java.lang.Math.*
 import kotlin.math.absoluteValue
+import kotlin.math.max
 
 private fun main() = day15()
 
@@ -12,17 +12,45 @@ fun day15() {
 
     runProblem("Part 1 (Demo)", expected = 26) { part1(inputDemo, 10) }
     runProblem("Part 1") { part1(input, 2000000) }
-    // runProblem("Part 2 (Demo)") { part2(inputDemo) }
-    // runProblem("Part 2") { part2(input) }
+    runProblem("Part 2 (Demo)", expected = 56000011L) { part2(inputDemo, 20) }
+    runProblem("Part 2") { part2(input, 4000000) }
 }
 
-private fun part2(input: List<String>): Int {
-    return 0
+private fun part2(input: List<String>, limit: Long): Long {
+    val lines = parse(input)
+
+    var found: P2? = null
+    for (y in 0 until limit) {
+        val ranges = ArrayList<LongRange>()
+        for (a in lines) {
+            val range = coveredRanges(a.sensor, a.closestBeacon, y) ?: continue
+
+            ranges.add(range)
+        }
+        ranges.sortBy { it.first }
+        // println("y=$y | $ranges")
+
+        // Find the gap between intervals
+        var bigRange = ranges[0]
+        for (r in ranges) {
+            if (r.first >= bigRange.first && r.first <= bigRange.last) {
+                bigRange = LongRange(bigRange.first, max(r.last, bigRange.last))
+            } else if ((bigRange.last + 1) == r.first) {
+                bigRange = bigRange.first..r.last
+            } else {
+                println("Found the gap | $bigRange $r")
+                found = P2(bigRange.last + 1, y)
+                break
+            }
+        }
+        if (found != null) break
+    }
+
+    return found!!.x * 4000000 + found.y
 }
 
 private fun part1(input: List<String>, searchLineY: Long): Int {
-    val (lines, minP, maxP) = parse(input)
-    println("minP:$minP, maxP:$maxP")
+    val lines = parse(input)
 
     // Given example
     // val distance = P2(8, 7).manhattanDistance(P2(2, 10))
@@ -39,9 +67,7 @@ private fun part1(input: List<String>, searchLineY: Long): Int {
         }
     }
 
-    for (r in ranges) {
-        println("$r")
-    }
+    // for (r in ranges) println("$r")
 
     println("notABeacon=${notABeacon.size}")
     var count = notABeacon.size
@@ -73,13 +99,8 @@ data class Line(val sensor: P2, val closestBeacon: P2)
 
 fun P2.manhattanDistance(p2: P2) = kotlin.math.abs(x - p2.x) + kotlin.math.abs(y - p2.y)
 
-data class Input(val lines: List<Line>, val minP: P2, val maxP: P2)
-
-private fun parse(input: List<String>): Input {
+private fun parse(input: List<String>): List<Line> {
     val regex = "Sensor at x=([-0-9]+), y=([-0-9]+): closest beacon is at x=([-0-9]+), y=([-0-9]+)".toRegex()
-
-    val allX = HashSet<Long>()
-    val allY = HashSet<Long>()
 
     val result = ArrayList<Line>()
     for (line in input) {
@@ -89,15 +110,6 @@ private fun parse(input: List<String>): Input {
         val closestBeacon = P2(x2.toLong(), y2.toLong())
 
         result.add(Line(P2(x1.toLong(), y1.toLong()), closestBeacon))
-
-        allX.add(x1.toLong())
-        allX.add(x2.toLong())
-        allY.add(y1.toLong())
-        allY.add(y2.toLong())
     }
-    val minX = allX.minOf { it }
-    val minY = allY.minOf { it }
-    val maxX = allX.maxOf { it }
-    val maxY = allY.maxOf { it }
-    return Input(result, P2(minX, minY), P2(maxX, maxY))
+    return result
 }
